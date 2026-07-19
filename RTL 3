@@ -1,9 +1,1 @@
-# Sequential Circuits
-This folder contains the implementation of sequential digital circuits designed using SystemVerilog. The projects demonstratetbench, simulation wav finite state machines (FSMs), memory elements, and communication interfaces. Each design includes its SystemVerilog source code, testbench, and relevant FSM or block diagrams.
 
-## Contents
-- 1101 Sequence Detector (FSM)
-- Vending Machine (FSM)
-- Traffic Light Controller (FSM)
-- 8-bit FIFO
-- APB Slave
