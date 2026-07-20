@@ -10,6 +10,9 @@ An 8-bit FIFO (First-In, First-Out) is a memory buffer that stores and retrieves
 - `8bit_FIFO_tb.sv` – Testbench for verification
 -  Relevant images
 
+## Wave form
+(images/waveform.png)
+
 ## Schematic Diagram
  <img width="1440" height="909" alt="FIFO Schematic diagram" src="https://github.com/user-attachments/assets/c7ff5938-0c8e-4580-af4b-d3ccc9288162" />
 
