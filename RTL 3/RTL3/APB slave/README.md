@@ -15,5 +15,7 @@ The testbench acts as the APB Master by generating the required signals for the 
 
 ## Waveform
 <img width="1332" height="357" alt="APB Waveform" src="https://github.com/user-attachments/assets/38ed89ac-a085-46bd-aee7-17135cf248d8" />
+
+ 
  ## Schematic Diagram
  <img width="720" height="921" alt="APB schematic diagram" src="https://github.com/user-attachments/assets/46a31b0f-c64b-4258-882a-f321ad6f327e" />
