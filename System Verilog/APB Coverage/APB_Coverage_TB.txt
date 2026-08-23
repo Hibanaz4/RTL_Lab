@@ -1,0 +1,132 @@
+class apb_transaction;
+
+rand bit pwrite;
+rand bit [7:0] paddr;
+rand bit [7:0] pwdata;
+
+endclass
+
+module tb;
+
+logic clk;
+
+apb_interface intf(clk);
+apb_slave dut(intf);
+
+apb_transaction tr;
+
+
+covergroup apb_cg;
+
+coverpoint intf.pwrite {
+
+bins read = {0};
+bins write = {1};
+
+}
+
+coverpoint intf.paddr {
+
+bins low_addr = {[0:85]};
+bins mid_addr = {[86:170]};
+bins high_addr = {[171:255]};
+
+}
+
+coverpoint intf.pwdata {
+
+bins low_data = {[0:85]};
+bins mid_data = {[86:170]};
+bins high_data = {[171:255]};
+
+}
+
+cross intf.paddr, intf.pwdata;
+
+endgroup
+
+
+apb_cg cg;
+
+
+initial begin
+
+clk = 0;
+forever #5 clk = ~clk;
+
+end
+
+
+initial begin
+
+$dumpfile("apb.vcd");
+$dumpvars(0,tb);
+
+tr = new();
+cg = new();
+
+intf.presetn = 0;
+intf.psel = 0;
+intf.penable = 0;
+intf.pwrite = 0;
+intf.paddr = 0;
+intf.pwdata = 0;
+
+repeat(2)
+@(posedge clk);
+
+intf.presetn = 1;
+
+repeat(10) begin
+
+if(tr.randomize()) begin
+
+intf.pwrite = tr.pwrite;
+intf.paddr = tr.paddr;
+intf.pwdata = tr.pwdata;
+
+@(posedge clk);
+
+intf.psel = 1;
+intf.penable = 0;
+
+@(posedge clk);
+
+intf.penable = 1;
+
+wait(intf.pready == 1);
+
+cg.sample();
+
+$display("PWRITE=%0d PADDR=%0d PWDATA=%0d COVERAGE=%0.2f%%",
+intf.pwrite,
+intf.paddr,
+intf.pwdata,
+cg.get_coverage());
+
+@(posedge clk);
+
+intf.psel = 0;
+intf.penable = 0;
+
+end
+
+else begin
+
+$display("Randomization failed");
+
+end
+
+end
+
+$display("----------------------------");
+$display("FINAL COVERAGE=%0.2f%%",cg.get_coverage());
+$display("----------------------------");
+
+#20;
+
+$finish;
+
+end
+
+endmodule

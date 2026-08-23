@@ -1,0 +1,50 @@
+interface apb_interface(input logic clk);
+
+logic presetn;
+logic psel;
+logic penable;
+logic pwrite;
+logic [7:0] paddr;
+logic [7:0] pwdata;
+logic [7:0] prdata;
+logic pready;
+logic pslverr;
+
+endinterface
+
+
+module apb_slave(apb_interface intf);
+
+logic [7:0] mem [0:255];
+
+always_ff @(posedge intf.clk) begin
+
+if(!intf.presetn) begin
+intf.prdata <= 0;
+intf.pready <= 0;
+intf.pslverr <= 0;
+end
+
+else begin
+
+intf.pready <= 0;
+intf.pslverr <= 0;
+
+if(intf.psel && intf.penable) begin
+
+intf.pready <= 1;
+
+if(intf.pwrite)
+mem[intf.paddr] <= intf.pwdata;
+else
+intf.prdata <= mem[intf.paddr];
+
+end
+
+end
+
+end
+
+endmodule
+
+
